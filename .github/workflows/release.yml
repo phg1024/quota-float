@@ -24,6 +24,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          zip="build/QuotaFloat-$(cat VERSION).zip"
-          shasum -a 256 "$zip" > "$zip.sha256"
-          gh release create "$GITHUB_REF_NAME" "$zip" "$zip.sha256" --title "Quota Float $(cat VERSION)" --generate-notes
+          zip="QuotaFloat-$(cat VERSION).zip"
+          (cd build && shasum -a 256 "$zip" > "$zip.sha256")
+          gh release create "$GITHUB_REF_NAME" "build/$zip" "build/$zip.sha256" --title "Quota Float $(cat VERSION)" --generate-notes
