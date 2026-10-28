@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test
+        run: scripts/test.sh
+      - name: Build app
+        run: scripts/build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: QuotaFloat
+          path: build/QuotaFloat-*.zip

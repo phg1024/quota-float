@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check tag matches VERSION
+        run: test "${GITHUB_REF_NAME#v}" = "$(cat VERSION)"
+      - name: Test
+        run: scripts/test.sh
+      - name: Build app
+        run: scripts/build.sh
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          zip="build/QuotaFloat-$(cat VERSION).zip"
+          shasum -a 256 "$zip" > "$zip.sha256"
+          gh release create "$GITHUB_REF_NAME" "$zip" "$zip.sha256" --title "Quota Float $(cat VERSION)" --generate-notes

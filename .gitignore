@@ -1,0 +1,10 @@
+.DS_Store
+.build/
+.swiftpm/
+build/
+*.xcodeproj/
+xcuserdata/
+
+# Legacy build location and private agent notes
+/Quota Float.app/
+/HANDOFF.md
